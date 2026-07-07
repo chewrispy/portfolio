@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bomi's AI App Store</title>
+  <meta name="description" content="바이브 코딩으로 만든 앱들을 앱스토어 형태로 모은 포트폴리오" />
+  <style>
+    :root {
+      --bg: #fbfbfc;
+      --fg: #111113;
+      --muted: #71717a;
+      --border: #e4e4e7;
+      --card: #ffffff;
+      --secondary: #f4f4f5;
+      --primary: #18181b;
+      --primary-fg: #ffffff;
+      --radius-xl: 32px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.06);
+      --shadow-md: 0 18px 50px rgba(0,0,0,.08);
+      --shadow-lg: 0 24px 70px rgba(0,0,0,.12);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 50% -10%, rgba(24,24,27,.07), transparent 36rem),
+        linear-gradient(180deg, #fff 0%, var(--bg) 100%);
+      color: var(--fg);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .shell { width: min(1160px, calc(100% - 40px)); margin: 0 auto; padding: 48px 0; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 950; letter-spacing: -.03em; }
+    .brand-badge { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 13px; background: var(--primary); color: white; box-shadow: var(--shadow-sm); }
+    .nav-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: flex-end; }
+    .pill {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 1px solid var(--border); background: rgba(255,255,255,.86); color: var(--muted);
+      border-radius: 999px; padding: 9px 15px; font-size: 12px; font-weight: 900;
+      letter-spacing: .12em; text-transform: uppercase; box-shadow: var(--shadow-sm);
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 1px solid var(--border); border-radius: 999px; padding: 11px 16px;
+      background: var(--card); color: var(--fg); font-size: 14px; font-weight: 850;
+      box-shadow: var(--shadow-sm); transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(0,0,0,.08); }
+    .btn.primary { border-color: var(--primary); background: var(--primary); color: var(--primary-fg); }
+    .btn.secondary { background: var(--secondary); border-color: transparent; }
+    .btn.small { padding: 8px 12px; font-size: 12px; }
+    .hero { display: grid; grid-template-columns: 1.25fr .75fr; gap: 44px; align-items: end; margin-bottom: 36px; }
+    .hero h1 { margin: 20px 0 0; font-size: clamp(38px, 6vw, 68px); line-height: 1.02; letter-spacing: -.06em; font-weight: 1000; word-break: keep-all; }
+    .lead { margin: 22px 0 0; max-width: 720px; font-size: 17px; line-height: 1.86; color: var(--muted); word-break: keep-all; }
+    .summary { border: 1px solid var(--border); background: rgba(255,255,255,.86); border-radius: var(--radius-xl); padding: 20px; box-shadow: var(--shadow-sm); backdrop-filter: blur(12px); }
+    .summary-title { font-size: 14px; font-weight: 900; color: var(--muted); margin-bottom: 14px; }
+    .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+    .stat { text-align: center; background: var(--secondary); border-radius: 18px; padding: 16px 8px; }
+    .stat strong { display:block; font-size: 28px; line-height: 1; font-weight: 1000; letter-spacing: -.04em; }
+    .stat span { display:block; margin-top: 6px; font-size: 10px; font-weight: 950; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .app-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 20px; }
+    .app-card {
+      position: relative; overflow: hidden; min-height: 350px; border: 1px solid rgba(228,228,231,.85);
+      border-radius: var(--radius-xl); background: var(--card); padding: 20px; box-shadow: var(--shadow-sm);
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+      text-align: left;
+    }
+    .app-card:hover { transform: translateY(-7px); box-shadow: var(--shadow-lg); border-color: rgba(24,24,27,.13); }
+    .app-card::before { content:""; position:absolute; inset:0; background: linear-gradient(135deg, var(--g1), var(--g2), var(--g3)); opacity:.86; transition: opacity .22s ease; }
+    .app-card:hover::before { opacity: 1; }
+    .app-card::after { content:""; position:absolute; right:-44px; top:-44px; width:154px; height:154px; border-radius:999px; background:rgba(255,255,255,.58); filter: blur(24px); }
+    .app-inner { position:relative; z-index:1; height:100%; display:flex; flex-direction:column; }
+    .card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:34px; }
+    .icon { width:80px; height:80px; border-radius:22px; display:grid; place-items:center; font-size:40px; border:1px solid rgba(0,0,0,.05); box-shadow: var(--shadow-sm); }
+    .emerald { background:#bbf7d0; color:#047857; }
+    .amber { background:#fef3c7; color:#b45309; }
+    .sky { background:#dff3ff; color:#0369a1; }
+    .rose { background:#ffe4e6; color:#be123c; }
+    .status { border-radius:999px; background:rgba(255,255,255,.78); padding:6px 12px; font-size:12px; font-weight:900; box-shadow: var(--shadow-sm); white-space:nowrap; }
+    .tag { display:inline-flex; font-size:12px; color:var(--muted); font-weight:1000; letter-spacing:.18em; text-transform:uppercase; }
+    .app-card h2 { margin: 10px 0 0; font-size: 24px; line-height:1.17; letter-spacing:-.04em; font-weight:1000; word-break:keep-all; }
+    .desc { margin: 14px 0 0; color:var(--muted); font-size:14px; line-height:1.72; word-break:keep-all; }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:auto; padding-top:28px; }
+    .chip { border-radius:999px; border:1px solid rgba(228,228,231,.72); background:rgba(255,255,255,.68); color:var(--muted); padding:6px 10px; font-size:12px; font-weight:750; }
+    .open-line { display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(228,228,231,.68); padding-top:16px; margin-top:22px; font-size:14px; font-weight:950; }
+    .footer-note { margin-top: 32px; border:1px dashed var(--border); background:rgba(255,255,255,.72); border-radius: var(--radius-xl); padding: 20px; color:var(--muted); font-size:14px; line-height:1.8; }
+    .footer-note strong { color: var(--fg); }
+    code { background: var(--secondary); border-radius:7px; padding:2px 6px; font-size:.92em; }
+    .app-page { display:grid; gap: 22px; }
+    .detail-hero { overflow:hidden; border:1px solid var(--border); border-radius: var(--radius-xl); background: var(--card); box-shadow: var(--shadow-sm); }
+    .detail-head { display:flex; justify-content:space-between; gap:24px; align-items:flex-start; background: linear-gradient(135deg, var(--g1), var(--g2), var(--g3)); padding: 28px; border-bottom:1px solid var(--border); }
+    .detail-head h1 { margin: 10px 0 0; font-size: clamp(30px, 4vw, 46px); line-height:1.05; letter-spacing:-.05em; font-weight:1000; word-break:keep-all; }
+    .detail-head p { margin: 14px 0 0; max-width: 760px; color: var(--muted); line-height:1.8; word-break:keep-all; }
+    .detail-body { padding: 24px; }
+    .notice { border:1px dashed var(--border); background:rgba(255,255,255,.76); border-radius:24px; padding:16px 18px; color:var(--muted); line-height:1.75; font-size:14px; }
+    .notice strong { color: var(--fg); }
+    .panel { border:1px solid var(--border); border-radius:28px; background:var(--card); box-shadow: var(--shadow-sm); overflow:hidden; }
+    .panel-pad { padding: 24px; }
+    .section-title { margin:0; font-size: 24px; letter-spacing:-.03em; font-weight:1000; }
+    .section-sub { margin: 8px 0 0; color:var(--muted); line-height:1.65; font-size:14px; }
+    .form-grid { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+    .field { display:grid; gap: 8px; }
+    .field label { font-size: 12px; font-weight: 900; color: var(--muted); }
+    .field input, .field select, .field textarea {
+      width:100%; border:1.5px solid var(--border); border-radius:16px; background:#fff; color:var(--fg);
+      padding: 12px 13px; outline:none; transition:border-color .15s ease, box-shadow .15s ease;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(24,24,27,.08); }
+    .field textarea { min-height: 128px; resize: vertical; line-height:1.6; }
+    .metric-grid { display:grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; margin: 20px 0; }
+    .metric { border:1px solid var(--border); border-radius:20px; background:var(--secondary); padding: 16px; }
+    .metric span { display:block; color:var(--muted); font-size:12px; font-weight:900; }
+    .metric strong { display:block; margin-top:8px; font-size:22px; letter-spacing:-.04em; font-weight:1000; }
+    .table-wrap { overflow:auto; border:1px solid var(--border); border-radius:20px; }
+    table { width:100%; border-collapse:collapse; min-width:620px; background:#fff; }
+    th, td { padding: 12px 14px; border-bottom:1px solid var(--border); text-align:left; font-size:14px; }
+    th { color:var(--muted); font-size:12px; font-weight:950; background:var(--secondary); }
+    tr:last-child td { border-bottom:0; }
+    .row-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:14px; flex-wrap:wrap; }
+    .restaurant-card { border:1px solid var(--border); border-left:5px solid var(--primary); border-radius:20px; background:#fff; padding:18px; box-shadow: var(--shadow-sm); }
+    .restaurant-grid { display:grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap:14px; }
+    .vote-row { display:flex; gap:8px; margin-top:16px; }
+    .vote-row button { flex:1; border:1px solid var(--border); background:#fff; border-radius:12px; padding:10px; font-size:12px; font-weight:850; }
+    .category-row { display:flex; flex-wrap:wrap; gap:8px; }
+    .category-row button { border:1px solid var(--border); background:#fff; border-radius:12px; padding:9px 12px; font-size:12px; font-weight:850; }
+    .category-row button.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+    .iframe-shell { height: min(74vh, 760px); min-height: 560px; border:1px solid var(--border); border-radius:24px; overflow:hidden; background:#fff; }
+    .iframe-shell iframe { width:100%; height:100%; border:0; background:#fff; }
+    .tcg-shell { height: min(88vh, 900px); min-height: 680px; background:#04040c; }
+    .tcg-shell iframe { background:#04040c; }
+    .empty-state { border:1px dashed var(--border); border-radius:20px; padding:28px; text-align:center; color:var(--muted); background:#fff; }
+    .toast { position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:var(--primary); color:#fff; border-radius:999px; padding:12px 16px; font-size:13px; font-weight:800; box-shadow:var(--shadow-lg); opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease; z-index:50; }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(-4px); }
+    @media (max-width: 1180px) { .app-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+    @media (max-width: 900px) {
+      .shell { width:min(100% - 28px, 760px); padding: 28px 0; }
+      .topbar, .hero, .detail-head { grid-template-columns: 1fr; flex-direction:column; align-items:stretch; }
+      .nav-actions { justify-content:flex-start; }
+      .hero { display:block; }
+      .summary { margin-top: 24px; }
+      .form-grid, .metric-grid, .restaurant-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .app-grid, .stats { grid-template-columns: 1fr; }
+      .app-card { min-height: 316px; }
+      .detail-head, .detail-body, .panel-pad { padding: 18px; }
+      .icon { width:68px; height:68px; font-size:34px; }
+    }
+  </style>
+</head>
+<body>
+  <main id="app"></main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+
+    const apps = [
+      {
+        slug: "meeting-budget", emoji: "💰", title: "부서 회의비 관리 앱", shortTitle: "회의비 관리",
+        description: "회의비와 조직관리비를 파트별로 기록하고 한눈에 정산해요.",
+        longDescription: "CSV 업로드, 월별 예산 계산, 파트별 재직 인원 관리까지 한 화면에서 처리할 수 있는 업무 도우미입니다.",
+        tag: "Finance", status: "연결됨", iconClass: "emerald",
+        gradient: ["rgba(52,211,153,.25)", "rgba(94,234,212,.15)", "rgba(103,232,249,.2)"],
+        features: ["CSV 업로드", "월별 예산 현황", "파트별 인원 관리"]
+      },
+      {
+        slug: "restaurant-picker", emoji: "🍻", title: "회식 장소 추천 앱", shortTitle: "회식 추천",
+        description: "예산과 음식 취향에 맞춰 회식 장소를 랜덤으로 추천해요.",
+        longDescription: "선택 장애가 오는 회식 장소 정하기를 더 가볍게 만들어주는 추천 앱입니다. 마음에 드는 장소에는 투표도 남길 수 있어요.",
+        tag: "Lifestyle", status: "연결됨", iconClass: "amber",
+        gradient: ["rgba(252,211,77,.3)", "rgba(253,186,116,.2)", "rgba(253,164,175,.2)"],
+        features: ["예산 기반 추천", "음식 카테고리 필터", "맛있어/별로 투표"]
+      },
+      {
+        slug: "casual-card-game", emoji: "🃏", title: "캐주얼 카드 게임", shortTitle: "카드 게임",
+        description: "의료진 캐릭터 카드로 상황을 해결하고 영향력을 겨루는 TCG예요.",
+        longDescription: "각 상황에 맞는 의사 카드를 선택해 파벌 영향력을 쌓고, 간호사를 영입하며 엔딩까지 진행하는 캐주얼 전략 카드 게임입니다.",
+        tag: "Game", status: "내장 실행", iconClass: "sky",
+        gradient: ["rgba(125,211,252,.3)", "rgba(165,180,252,.2)", "rgba(196,181,253,.2)"],
+        features: ["상황 카드 해결", "간호사 영입", "파벌 영향력 경쟁"],
+        sourceUrl: "https://z43n73.csb.app/"
+      },
+      {
+        slug: "snack-shelf", emoji: "🍪", title: "파트 다과 선반 관리 앱", shortTitle: "다과 선반",
+        description: "파트 다과 선반의 재고를 확인하고 보충이 필요한 품목을 관리해요.",
+        longDescription: "기존에 만들어둔 다과 선반 재고 관리 웹페이지를 포트폴리오 앱스토어 안에서 바로 열어볼 수 있도록 연결한 업무 지원 앱입니다.",
+        tag: "Inventory", status: "연결됨", iconClass: "rose",
+        gradient: ["rgba(253,164,175,.3)", "rgba(249,168,212,.2)", "rgba(253,186,116,.2)"],
+        features: ["재고 확인", "보충 관리", "웹앱 연결"],
+        sourceUrl: "https://chewrispy.github.io/ux/"
+      }
+    ];
+
+    const restaurants = {
+      "한식": [
+        { name: "남도밥상", cuisine: "한식", menu: "제육정식, 갈치조림", budget: 18000, address: "회사 근처 5분 거리", rating: 4.4, reaction: "든든하게 먹기 좋아요" },
+        { name: "소담한우", cuisine: "한식", menu: "한우불고기, 된장찌개", budget: 32000, address: "역삼역 인근", rating: 4.6, reaction: "회식 만족도가 높아요" },
+        { name: "청국장과 보쌈", cuisine: "한식", menu: "보쌈정식, 청국장", budget: 24000, address: "삼성역 뒷골목", rating: 4.3, reaction: "호불호 적은 메뉴예요" }
+      ],
+      "중식": [
+        { name: "홍콩반점 프리미엄", cuisine: "중식", menu: "탕수육, 짬뽕전골", budget: 22000, address: "회사 정문 앞", rating: 4.2, reaction: "빠르게 먹고 이동하기 좋아요" },
+        { name: "라이라이", cuisine: "중식", menu: "유산슬, 깐풍기", budget: 38000, address: "코엑스몰 인근", rating: 4.5, reaction: "조금 특별한 회식에 좋아요" }
+      ],
+      "일식": [
+        { name: "스시모리", cuisine: "일식", menu: "초밥 세트, 사시미", budget: 42000, address: "테헤란로", rating: 4.7, reaction: "조용한 회식에 어울려요" },
+        { name: "멘야하루", cuisine: "일식", menu: "라멘, 가라아게", budget: 17000, address: "회사 후문", rating: 4.3, reaction: "가볍게 먹기 좋아요" }
+      ],
+      "양식": [
+        { name: "파스타랩", cuisine: "양식", menu: "파스타, 리조또", budget: 27000, address: "선릉역 인근", rating: 4.4, reaction: "분위기가 산뜻해요" },
+        { name: "그릴하우스", cuisine: "양식", menu: "스테이크, 샐러드", budget: 55000, address: "삼성중앙역", rating: 4.6, reaction: "기념 회식에 좋아요" }
+      ],
+      "주점": [
+        { name: "문어와 맥주", cuisine: "주점", menu: "문어숙회, 생맥주", budget: 30000, address: "회사 근처 먹자골목", rating: 4.2, reaction: "2차까지 자연스럽게 이어져요" },
+        { name: "치킨연구소", cuisine: "주점", menu: "치킨, 골뱅이", budget: 25000, address: "역삼 먹자골목", rating: 4.1, reaction: "캐주얼한 분위기예요" }
+      ]
+    };
+
+    const appRoot = document.getElementById("app");
+    const toast = document.getElementById("toast");
+    let budgetState = loadJSON("portfolio-budget-state", null) || {
+      part: "UXS", month: new Date().toISOString().slice(0,7), perMember: 30000,
+      members: ["보미", "민준", "서연", "지우"],
+      entries: [
+        { id: cryptoId(), part: "UXS", month: new Date().toISOString().slice(0,7), category: "회의비", title: "주간 회의 커피", amount: 42000, date: new Date().toISOString().slice(0,10), memo: "샘플 데이터" },
+        { id: cryptoId(), part: "UXS", month: new Date().toISOString().slice(0,7), category: "조직관리비", title: "파트 간식", amount: 68000, date: new Date().toISOString().slice(0,10), memo: "샘플 데이터" }
+      ]
+    };
+    let restaurantVotes = loadJSON("portfolio-restaurant-votes", {});
+    let restaurantResults = null;
+
+    function cryptoId() {
+      return "id-" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    }
+    function loadJSON(key, fallback) {
+      try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
+    }
+    function saveJSON(key, value) {
+      try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+    }
+    function money(value) {
+      return Number(value || 0).toLocaleString("ko-KR") + "원";
+    }
+    function esc(value) {
+      return String(value ?? "").replace(/[&<>'"]/g, (ch) => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[ch]));
+    }
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+    function getCurrentSlug() {
+      return location.hash.replace(/^#\/?/, "") || "home";
+    }
+    function setRoute(slug) {
+      location.hash = slug === "home" ? "" : slug;
+    }
+    function appStyle(app) {
+      return `--g1:${app.gradient[0]};--g2:${app.gradient[1]};--g3:${app.gradient[2]}`;
+    }
+    function layout(inner, options = {}) {
+      const isHome = getCurrentSlug() === "home";
+      return `
+        <div class="shell">
+          <div class="topbar">
+            <a href="#" class="brand" aria-label="홈으로 이동"><span class="brand-badge">AI</span><span>Bomi's App Store</span></a>
+            <div class="nav-actions">
+              ${isHome ? `<span class="pill">Vibe Coding Portfolio</span>` : `<button class="btn secondary" data-action="home">← 앱 스토어로 돌아가기</button>`}
+              ${options.sourceUrl ? `<a class="btn" href="${esc(options.sourceUrl)}" target="_blank" rel="noreferrer">원본 앱 보기 ↗</a>` : ""}
+            </div>
+          </div>
+          ${inner}
+        </div>
+      `;
+    }
+    function renderHome() {
+      appRoot.innerHTML = layout(`
+        <section class="hero">
+          <div>
+            <h1>바이브 코딩으로 만든 앱들을 한곳에 모았어요.</h1>
+            <p class="lead">업무에 바로 써볼 수 있는 작은 도구부터 가볍게 즐기는 게임까지, 직접 만든 프로젝트를 앱스토어처럼 둘러볼 수 있는 포트폴리오입니다.</p>
+          </div>
+          <aside class="summary">
+            <div class="summary-title">Portfolio Summary</div>
+            <div class="stats">
+              <div class="stat"><strong>${apps.length}</strong><span>Archived Apps</span></div>
+              <div class="stat"><strong>${apps.length}</strong><span>Playable</span></div>
+              <div class="stat"><strong>100%</strong><span>Vibe-coded</span></div>
+            </div>
+          </aside>
+        </section>
+        <section class="app-grid" aria-label="AI 프로젝트 목록">
+          ${apps.map(app => `
+            <a class="app-card" href="#${app.slug}" style="${appStyle(app)}">
+              <div class="app-inner">
+                <div class="card-top"><div class="icon ${app.iconClass}" aria-hidden="true">${app.emoji}</div><span class="status">${app.status}</span></div>
+                <span class="tag">${app.tag}</span>
+                <h2>${app.title}</h2>
+                <p class="desc">${app.description}</p>
+                <div class="chips">${app.features.map(f => `<span class="chip">${f}</span>`).join("")}</div>
+                <div class="open-line"><span>열어보기</span><span aria-hidden="true">→</span></div>
+              </div>
+            </a>
+          `).join("")}
+        </section>
+        <footer class="footer-note"><strong>HTML 단일 파일로 구성했어요.</strong> 이 파일 하나만 브라우저에서 열면 포트폴리오 홈, 회의비 관리, 회식 추천, 카드 게임 원본 실행 연결, 다과 선반 웹앱 연결을 모두 확인할 수 있습니다.</footer>
+      `);
+    }
+    function renderDetail(app, body, extraOptions = {}) {
+      appRoot.innerHTML = layout(`
+        <section class="app-page">
+          <div class="detail-hero">
+            <div class="detail-head" style="${appStyle(app)}">
+              <div>
+                <span class="pill">${app.tag}</span>
+                <h1>${app.title}</h1>
+                <p>${app.longDescription}</p>
+              </div>
+              <div class="icon ${app.iconClass}" aria-hidden="true">${app.emoji}</div>
+            </div>
+            <div class="detail-body">${body}</div>
+          </div>
+        </section>
+      `, { sourceUrl: extraOptions.sourceUrl });
+    }
+    function renderBudget() {
+      const app = apps.find(a => a.slug === "meeting-budget");
+      const currentEntries = budgetState.entries.filter(e => e.part === budgetState.part && e.month === budgetState.month);
+      const totalBudget = budgetState.members.length * Number(budgetState.perMember || 0);
+      const spent = currentEntries.reduce((sum, e) => sum + Number(e.amount || 0), 0);
+      const remaining = totalBudget - spent;
+      renderDetail(app, `
+        <div class="panel"><div class="panel-pad">
+          <h2 class="section-title">월별 예산 현황</h2>
+          <p class="section-sub">파트, 월, 인원, 1인 기준 예산을 바꾸면 남은 예산이 바로 계산됩니다. 데이터는 이 브라우저에 자동 저장돼요.</p>
+          <div class="form-grid" style="margin-top:18px">
+            <div class="field"><label>파트</label><select id="budget-part"><option>UXS</option><option>UXD</option><option>UXO</option></select></div>
+            <div class="field"><label>월</label><input id="budget-month" type="month" value="${esc(budgetState.month)}" /></div>
+            <div class="field"><label>1인 기준 예산</label><input id="budget-per-member" type="number" min="0" step="1000" value="${esc(budgetState.perMember)}" /></div>
+          </div>
+          <div class="metric-grid">
+            <div class="metric"><span>재직 인원</span><strong>${budgetState.members.length}명</strong></div>
+            <div class="metric"><span>총 예산</span><strong>${money(totalBudget)}</strong></div>
+            <div class="metric"><span>사용 금액</span><strong>${money(spent)}</strong></div>
+            <div class="metric"><span>잔여 예산</span><strong>${money(remaining)}</strong></div>
+          </div>
+          <div class="form-grid">
+            <div class="field"><label>품의명/내용</label><input id="entry-title" placeholder="예: 파트 회의 커피" /></div>
+            <div class="field"><label>분류</label><select id="entry-category"><option>회의비</option><option>조직관리비</option><option>기타</option></select></div>
+            <div class="field"><label>금액</label><input id="entry-amount" type="number" min="0" placeholder="42000" /></div>
+          </div>
+          <div class="form-grid" style="margin-top:14px; grid-template-columns: 1fr 2fr;">
+            <div class="field"><label>사용일</label><input id="entry-date" type="date" value="${new Date().toISOString().slice(0,10)}" /></div>
+            <div class="field"><label>메모</label><input id="entry-memo" placeholder="선택 입력" /></div>
+          </div>
+          <div class="row-actions"><button class="btn secondary" data-budget="sample-csv">CSV 샘플 넣기</button><button class="btn primary" data-budget="add">사용 내역 추가</button></div>
+        </div></div>
+        <div class="panel"><div class="panel-pad">
+          <h2 class="section-title">파트 인원 관리</h2>
+          <p class="section-sub">한 줄에 한 명씩 입력하세요.</p>
+          <div class="field" style="margin-top:14px"><textarea id="budget-members">${budgetState.members.map(esc).join("\n")}</textarea></div>
+          <div class="row-actions"><button class="btn primary" data-budget="save-members">인원 저장</button></div>
+        </div></div>
+        <div class="panel"><div class="panel-pad">
+          <h2 class="section-title">사용 내역</h2>
+          <div style="height:14px"></div>
+          ${currentEntries.length ? `<div class="table-wrap"><table><thead><tr><th>날짜</th><th>분류</th><th>내용</th><th>금액</th><th>메모</th><th></th></tr></thead><tbody>${currentEntries.map(e => `<tr><td>${esc(e.date)}</td><td>${esc(e.category)}</td><td>${esc(e.title)}</td><td>${money(e.amount)}</td><td>${esc(e.memo || "-")}</td><td><button class="btn small" data-budget="delete" data-id="${e.id}">삭제</button></td></tr>`).join("")}</tbody></table></div>` : `<div class="empty-state">아직 등록된 사용 내역이 없습니다.</div>`}
+        </div></div>
+      `);
+      document.getElementById("budget-part").value = budgetState.part;
+      bindBudgetHandlers();
+    }
+    function bindBudgetHandlers() {
+      const updateBase = () => {
+        budgetState.part = document.getElementById("budget-part").value;
+        budgetState.month = document.getElementById("budget-month").value;
+        budgetState.perMember = Number(document.getElementById("budget-per-member").value || 0);
+        saveJSON("portfolio-budget-state", budgetState);
+        renderBudget();
+      };
+      ["budget-part", "budget-month", "budget-per-member"].forEach(id => document.getElementById(id).addEventListener("change", updateBase));
+      document.querySelectorAll("[data-budget]").forEach(btn => btn.addEventListener("click", () => {
+        const action = btn.dataset.budget;
+        if (action === "save-members") {
+          budgetState.members = document.getElementById("budget-members").value.split("\n").map(v => v.trim()).filter(Boolean);
+          saveJSON("portfolio-budget-state", budgetState); showToast("파트 인원이 저장됐어요."); renderBudget();
+        }
+        if (action === "add") {
+          const title = document.getElementById("entry-title").value.trim();
+          const amount = Number(document.getElementById("entry-amount").value || 0);
+          if (!title || !amount) { showToast("내용과 금액을 입력해 주세요."); return; }
+          budgetState.entries.push({ id: cryptoId(), part: budgetState.part, month: budgetState.month, category: document.getElementById("entry-category").value, title, amount, date: document.getElementById("entry-date").value, memo: document.getElementById("entry-memo").value.trim() });
+          saveJSON("portfolio-budget-state", budgetState); showToast("사용 내역을 추가했어요."); renderBudget();
+        }
+        if (action === "delete") {
+          budgetState.entries = budgetState.entries.filter(e => e.id !== btn.dataset.id);
+          saveJSON("portfolio-budget-state", budgetState); renderBudget();
+        }
+        if (action === "sample-csv") {
+          budgetState.entries.push({ id: cryptoId(), part: budgetState.part, month: budgetState.month, category:"회의비", title:"CSV 샘플 - 팀 미팅 도시락", amount: 96000, date: new Date().toISOString().slice(0,10), memo:"샘플 업로드" });
+          saveJSON("portfolio-budget-state", budgetState); showToast("CSV 샘플 데이터를 추가했어요."); renderBudget();
+        }
+      }));
+    }
+    function renderRestaurant() {
+      const app = apps.find(a => a.slug === "restaurant-picker");
+      const categories = Object.keys(restaurants);
+      const resultsHTML = restaurantResults ? renderRestaurantResults(restaurantResults) : `<div class="empty-state">예산과 카테고리를 선택한 뒤 추천받기를 눌러보세요.</div>`;
+      renderDetail(app, `
+        <div class="panel"><div class="panel-pad">
+          <h2 class="section-title">회식장소 랜덤 추천</h2>
+          <p class="section-sub">1인 기준 예산의 ±30% 범위에서 조건에 맞는 회식 장소를 추천합니다.</p>
+          <div class="form-grid" style="margin-top:18px; grid-template-columns: 1fr 2fr;">
+            <div class="field"><label>예산 / 1인</label><input id="restaurant-budget" type="number" min="0" value="50000" /></div>
+            <div class="field"><label>음식 카테고리</label><div class="category-row" id="category-row"><button class="active" data-category="전체">전체</button>${categories.map(c => `<button data-category="${esc(c)}">${esc(c)}</button>`).join("")}</div></div>
+          </div>
+          <div class="row-actions"><button class="btn secondary" data-restaurant="reset">초기화</button><button class="btn primary" data-restaurant="recommend">추천받기</button></div>
+        </div></div>
+        <div id="restaurant-results">${resultsHTML}</div>
+      `);
+      bindRestaurantHandlers();
+    }
+    function renderRestaurantResults(results) {
+      if (!results.length) return `<div class="empty-state">조건에 맞는 식당이 없습니다. 예산을 조정해보세요.</div>`;
+      return `<div class="restaurant-grid">${results.map(r => {
+        const v = restaurantVotes[r.name] || { good: 0, bad: 0 };
+        return `<article class="restaurant-card"><div class="tag">${esc(r.cuisine)}</div><h3 style="margin:8px 0 6px;font-size:22px;letter-spacing:-.03em">${esc(r.name)}</h3><p style="margin:0 0 12px;color:var(--muted);font-weight:800">“${esc(r.reaction)}”</p><div style="display:grid;gap:6px;color:var(--muted);font-size:14px"><div><strong style="color:var(--fg)">대표메뉴</strong> ${esc(r.menu)}</div><div><strong style="color:var(--fg)">가격</strong> ${money(r.budget)} / 1인</div><div><strong style="color:var(--fg)">위치</strong> ${esc(r.address)}</div><div><strong style="color:var(--fg)">평점</strong> ⭐ ${esc(r.rating)}</div></div><div class="vote-row"><button data-vote="good" data-name="${esc(r.name)}">맛있어! (${v.good})</button><button data-vote="bad" data-name="${esc(r.name)}">별로 (${v.bad})</button></div></article>`;
+      }).join("")}</div>`;
+    }
+    function bindRestaurantHandlers() {
+      let selected = "전체";
+      document.querySelectorAll("[data-category]").forEach(btn => btn.addEventListener("click", () => {
+        selected = btn.dataset.category;
+        document.querySelectorAll("[data-category]").forEach(b => b.classList.toggle("active", b === btn));
+      }));
+      document.querySelectorAll("[data-restaurant]").forEach(btn => btn.addEventListener("click", () => {
+        if (btn.dataset.restaurant === "reset") { restaurantResults = null; renderRestaurant(); return; }
+        const budget = Number(document.getElementById("restaurant-budget").value || 0);
+        const min = budget * .7, max = budget * 1.3;
+        const groups = selected === "전체" ? Object.keys(restaurants) : [selected];
+        const picked = [];
+        groups.forEach(group => {
+          const filtered = restaurants[group].filter(r => r.budget >= min && r.budget <= max);
+          if (filtered.length) picked.push(filtered[Math.floor(Math.random() * filtered.length)]);
+        });
+        restaurantResults = picked;
+        document.getElementById("restaurant-results").innerHTML = renderRestaurantResults(picked);
+        bindVoteHandlers();
+      }));
+      bindVoteHandlers();
+    }
+    function bindVoteHandlers() {
+      document.querySelectorAll("[data-vote]").forEach(btn => btn.addEventListener("click", () => {
+        const name = btn.dataset.name;
+        const type = btn.dataset.vote;
+        restaurantVotes[name] = restaurantVotes[name] || { good: 0, bad: 0 };
+        restaurantVotes[name][type] += 1;
+        saveJSON("portfolio-restaurant-votes", restaurantVotes);
+        document.getElementById("restaurant-results").innerHTML = renderRestaurantResults(restaurantResults || []);
+        bindVoteHandlers();
+      }));
+    }
+    function renderCardGame() {
+      const app = apps.find(a => a.slug === "casual-card-game");
+      renderDetail(app, `
+        <div class="panel"><div class="panel-pad">
+          <div class="iframe-shell tcg-shell"><iframe id="yos-tcg-frame" title="YOS TCG"></iframe></div>
+          <div style="display:flex;justify-content:center;margin-top:14px;">
+            <a class="btn ghost" href="${app.sourceUrl}" target="_blank" rel="noreferrer">원본 앱 새 탭에서 열기 ↗</a>
+          </div>
+        </div></div>
+      `, { sourceUrl: app.sourceUrl });
+      setTimeout(() => {
+        const frame = document.getElementById("yos-tcg-frame");
+        if (frame) frame.srcdoc = YOS_TCG_HTML;
+      }, 0);
+    }
+    function renderSnackShelf() {
+      const app = apps.find(a => a.slug === "snack-shelf");
+      renderDetail(app, `
+        <div class="panel"><div class="panel-pad">
+          <div class="iframe-shell"><iframe title="파트 다과 선반 관리 앱" src="${app.sourceUrl}" loading="lazy"></iframe></div>
+        </div></div>
+      `, { sourceUrl: app.sourceUrl });
+    }
+    function route() {
+      const slug = getCurrentSlug();
+      if (slug === "home") return renderHome();
+      if (slug === "meeting-budget") return renderBudget();
+      if (slug === "restaurant-picker") return renderRestaurant();
+      if (slug === "casual-card-game") return renderCardGame();
+      if (slug === "snack-shelf") return renderSnackShelf();
+      renderHome();
+    }
+    document.addEventListener("click", (e) => {
+      const home = e.target.closest("[data-action='home']");
+      if (home) { e.preventDefault(); setRoute("home"); }
+    });
+    window.addEventListener("hashchange", route);
+    route();
+  </script>
+</body>
+</html>
