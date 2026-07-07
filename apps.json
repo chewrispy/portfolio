@@ -1,0 +1,58 @@
+[
+  {
+    "slug": "meeting-budget",
+    "emoji": "💰",
+    "title": "부서 회의비 관리 앱",
+    "shortTitle": "회의비 관리",
+    "description": "회의비와 조직관리비를 파트별로 기록하고 한눈에 정산해요.",
+    "longDescription": "CSV 업로드, 월별 예산 계산, 파트별 재직 인원 관리까지 한 화면에서 처리할 수 있는 업무 도우미입니다.",
+    "tag": "Finance",
+    "status": "연결됨",
+    "iconClass": "emerald",
+    "gradient": ["rgba(52,211,153,.25)", "rgba(94,234,212,.15)", "rgba(103,232,249,.2)"],
+    "features": ["CSV 업로드", "월별 예산 현황", "파트별 인원 관리"],
+    "sourceUrl": ""
+  },
+  {
+    "slug": "restaurant-picker",
+    "emoji": "🍻",
+    "title": "회식 장소 추천 앱",
+    "shortTitle": "회식 추천",
+    "description": "예산과 음식 취향에 맞춰 회식 장소를 랜덤으로 추천해요.",
+    "longDescription": "선택 장애가 오는 회식 장소 정하기를 더 가볍게 만들어주는 추천 앱입니다. 마음에 드는 장소에는 투표도 남길 수 있어요.",
+    "tag": "Lifestyle",
+    "status": "연결됨",
+    "iconClass": "amber",
+    "gradient": ["rgba(252,211,77,.3)", "rgba(253,186,116,.2)", "rgba(253,164,175,.2)"],
+    "features": ["예산 기반 추천", "음식 카테고리 필터", "맛있어/별로 투표"],
+    "sourceUrl": ""
+  },
+  {
+    "slug": "casual-card-game",
+    "emoji": "🃏",
+    "title": "캐주얼 카드 게임",
+    "shortTitle": "카드 게임",
+    "description": "의료진 캐릭터 카드로 상황을 해결하고 영향력을 겨루는 TCG예요.",
+    "longDescription": "각 상황에 맞는 의사 카드를 선택해 파벌 영향력을 쌓고, 간호사를 영입하며 엔딩까지 진행하는 캐주얼 전략 카드 게임입니다.",
+    "tag": "Game",
+    "status": "내장 실행",
+    "iconClass": "sky",
+    "gradient": ["rgba(125,211,252,.3)", "rgba(165,180,252,.2)", "rgba(196,181,253,.2)"],
+    "features": ["상황 카드 해결", "간호사 영입", "파벌 영향력 경쟁"],
+    "sourceUrl": "https://z43n73.csb.app/"
+  },
+  {
+    "slug": "snack-shelf",
+    "emoji": "🍪",
+    "title": "파트 다과 선반 관리 앱",
+    "shortTitle": "다과 선반",
+    "description": "파트 다과 선반의 재고를 확인하고 보충이 필요한 품목을 관리해요.",
+    "longDescription": "기존에 만들어둔 다과 선반 재고 관리 웹페이지를 포트폴리오 앱스토어 안에서 바로 열어볼 수 있도록 연결한 업무 지원 앱입니다.",
+    "tag": "Inventory",
+    "status": "연결됨",
+    "iconClass": "rose",
+    "gradient": ["rgba(253,164,175,.3)", "rgba(249,168,212,.2)", "rgba(253,186,116,.2)"],
+    "features": ["재고 확인", "보충 관리", "웹앱 연결"],
+    "sourceUrl": "https://chewrispy.github.io/ux/"
+  }
+]
