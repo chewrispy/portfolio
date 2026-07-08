@@ -53,6 +53,6 @@
     "iconClass": "rose",
     "gradient": ["rgba(253,164,175,.3)", "rgba(249,168,212,.2)", "rgba(253,186,116,.2)"],
     "features": ["재고 확인", "보충 관리", "웹앱 연결"],
-    "sourceUrl": "https://chewrispy.github.io/ux/"
+    "sourceUrl": "https://chewrispy.github.io/snack/"
   }
 ]
