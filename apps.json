@@ -9,8 +9,16 @@
     "tag": "Finance",
     "status": "연결됨",
     "iconClass": "emerald",
-    "gradient": ["rgba(52,211,153,.25)", "rgba(94,234,212,.15)", "rgba(103,232,249,.2)"],
-    "features": ["CSV 업로드", "월별 예산 현황", "파트별 인원 관리"],
+    "gradient": [
+      "rgba(52,211,153,.25)",
+      "rgba(94,234,212,.15)",
+      "rgba(103,232,249,.2)"
+    ],
+    "features": [
+      "CSV 업로드",
+      "월별 예산 현황",
+      "파트별 인원 관리"
+    ],
     "sourceUrl": ""
   },
   {
@@ -23,8 +31,16 @@
     "tag": "Lifestyle",
     "status": "연결됨",
     "iconClass": "amber",
-    "gradient": ["rgba(252,211,77,.3)", "rgba(253,186,116,.2)", "rgba(253,164,175,.2)"],
-    "features": ["예산 기반 추천", "음식 카테고리 필터", "맛있어/별로 투표"],
+    "gradient": [
+      "rgba(252,211,77,.3)",
+      "rgba(253,186,116,.2)",
+      "rgba(253,164,175,.2)"
+    ],
+    "features": [
+      "예산 기반 추천",
+      "음식 카테고리 필터",
+      "맛있어/별로 투표"
+    ],
     "sourceUrl": ""
   },
   {
@@ -37,8 +53,16 @@
     "tag": "Game",
     "status": "내장 실행",
     "iconClass": "sky",
-    "gradient": ["rgba(125,211,252,.3)", "rgba(165,180,252,.2)", "rgba(196,181,253,.2)"],
-    "features": ["상황 카드 해결", "간호사 영입", "파벌 영향력 경쟁"],
+    "gradient": [
+      "rgba(125,211,252,.3)",
+      "rgba(165,180,252,.2)",
+      "rgba(196,181,253,.2)"
+    ],
+    "features": [
+      "상황 카드 해결",
+      "간호사 영입",
+      "파벌 영향력 경쟁"
+    ],
     "sourceUrl": "https://z43n73.csb.app/"
   },
   {
@@ -51,8 +75,38 @@
     "tag": "Inventory",
     "status": "연결됨",
     "iconClass": "rose",
-    "gradient": ["rgba(253,164,175,.3)", "rgba(249,168,212,.2)", "rgba(253,186,116,.2)"],
-    "features": ["재고 확인", "보충 관리", "웹앱 연결"],
+    "gradient": [
+      "rgba(253,164,175,.3)",
+      "rgba(249,168,212,.2)",
+      "rgba(253,186,116,.2)"
+    ],
+    "features": [
+      "재고 확인",
+      "보충 관리",
+      "웹앱 연결"
+    ],
     "sourceUrl": "https://chewrispy.github.io/snack/"
+  },
+  {
+    "slug": "research-management",
+    "emoji": "🏢",
+    "title": "리서치 업무 관리 앱",
+    "shortTitle": "리서치 업무 관리 앱",
+    "description": "리서치 업무의 전체 프로세스를 한 눈에 보고 관리해요.",
+    "longDescription": "리서치 업무의 전체 프로세스를 한 눈에 보고 관리해요. 단계 별 필요한 산출물도 자동 생성해서 업무 생산성을 높여줍니다.",
+    "tag": "Productivity",
+    "status": "연결됨",
+    "iconClass": "sky",
+    "gradient": [
+      "rgba(125,211,252,.3)",
+      "rgba(165,180,252,.2)",
+      "rgba(196,181,253,.2)"
+    ],
+    "features": [
+      "업무 관리",
+      "일정 관리",
+      "결과물 자동 생성"
+    ],
+    "sourceUrl": ""
   }
 ]
