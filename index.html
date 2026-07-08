@@ -278,6 +278,18 @@ ${app.buildInfo && app.buildInfo.tool ? `<div style="font-size:11px;color:var(--
         <div class="panel"><div class="panel-pad">
           <div class="iframe-shell workapp-shell"><iframe id="meeting-budget-frame" title="부서 회의비 관리 앱"></iframe></div>
         </div></div>
+        ${app.buildInfo && (app.buildInfo.tool || app.buildInfo.repo || app.buildInfo.notes) ? `
+<div class="panel"><div class="panel-pad">
+  <h2 class="section-title">🛠 제작 정보</h2>
+  <div class="metric-grid" style="margin-top:14px;">
+    ${app.buildInfo.tool ? `<div class="metric"><span>도구</span><strong>${app.buildInfo.tool}</strong></div>` : ""}
+    ${app.buildInfo.date ? `<div class="metric"><span>시기</span><strong>${app.buildInfo.date}</strong></div>` : ""}
+    ${app.buildInfo.repo ? `<div class="metric"><span>저장소</span><strong style="font-size:14px;">${app.buildInfo.repo}</strong></div>` : ""}
+  </div>
+  ${app.buildInfo.stack && app.buildInfo.stack.length ? `<div class="chips" style="padding-top:14px;margin-top:0;">${app.buildInfo.stack.map(s => `<span class="chip">${s}</span>`).join("")}</div>` : ""}
+  ${app.buildInfo.notes ? `<p class="section-sub" style="margin-top:14px;">${app.buildInfo.notes}</p>` : ""}
+</div></div>
+` : ""}
       `);
       setEmbeddedFrame("meeting-budget-frame", BUDGET_APP_HTML);
     }
@@ -287,6 +299,18 @@ ${app.buildInfo && app.buildInfo.tool ? `<div style="font-size:11px;color:var(--
         <div class="panel"><div class="panel-pad">
           <div class="iframe-shell workapp-shell"><iframe id="restaurant-picker-frame" title="회식 장소 추천 앱"></iframe></div>
         </div></div>
+        ${app.buildInfo && (app.buildInfo.tool || app.buildInfo.repo || app.buildInfo.notes) ? `
+<div class="panel"><div class="panel-pad">
+  <h2 class="section-title">🛠 제작 정보</h2>
+  <div class="metric-grid" style="margin-top:14px;">
+    ${app.buildInfo.tool ? `<div class="metric"><span>도구</span><strong>${app.buildInfo.tool}</strong></div>` : ""}
+    ${app.buildInfo.date ? `<div class="metric"><span>시기</span><strong>${app.buildInfo.date}</strong></div>` : ""}
+    ${app.buildInfo.repo ? `<div class="metric"><span>저장소</span><strong style="font-size:14px;">${app.buildInfo.repo}</strong></div>` : ""}
+  </div>
+  ${app.buildInfo.stack && app.buildInfo.stack.length ? `<div class="chips" style="padding-top:14px;margin-top:0;">${app.buildInfo.stack.map(s => `<span class="chip">${s}</span>`).join("")}</div>` : ""}
+  ${app.buildInfo.notes ? `<p class="section-sub" style="margin-top:14px;">${app.buildInfo.notes}</p>` : ""}
+</div></div>
+` : ""}
       `);
       setEmbeddedFrame("restaurant-picker-frame", RESTAURANT_APP_HTML);
     }
@@ -296,6 +320,18 @@ ${app.buildInfo && app.buildInfo.tool ? `<div style="font-size:11px;color:var(--
         <div class="panel"><div class="panel-pad">
           <div class="iframe-shell tcg-shell"><iframe id="yos-tcg-frame" title="YOS TCG"></iframe></div>
         </div></div>
+        ${app.buildInfo && (app.buildInfo.tool || app.buildInfo.repo || app.buildInfo.notes) ? `
+<div class="panel"><div class="panel-pad">
+  <h2 class="section-title">🛠 제작 정보</h2>
+  <div class="metric-grid" style="margin-top:14px;">
+    ${app.buildInfo.tool ? `<div class="metric"><span>도구</span><strong>${app.buildInfo.tool}</strong></div>` : ""}
+    ${app.buildInfo.date ? `<div class="metric"><span>시기</span><strong>${app.buildInfo.date}</strong></div>` : ""}
+    ${app.buildInfo.repo ? `<div class="metric"><span>저장소</span><strong style="font-size:14px;">${app.buildInfo.repo}</strong></div>` : ""}
+  </div>
+  ${app.buildInfo.stack && app.buildInfo.stack.length ? `<div class="chips" style="padding-top:14px;margin-top:0;">${app.buildInfo.stack.map(s => `<span class="chip">${s}</span>`).join("")}</div>` : ""}
+  ${app.buildInfo.notes ? `<p class="section-sub" style="margin-top:14px;">${app.buildInfo.notes}</p>` : ""}
+</div></div>
+` : ""}
       `, { sourceUrl: app.sourceUrl });
       setTimeout(() => {
         const frame = document.getElementById("yos-tcg-frame");
@@ -308,6 +344,18 @@ ${app.buildInfo && app.buildInfo.tool ? `<div style="font-size:11px;color:var(--
         <div class="panel"><div class="panel-pad">
           <div class="iframe-shell"><iframe title="파트 다과 선반 관리 앱" src="${app.sourceUrl}" loading="lazy"></iframe></div>
         </div></div>
+        ${app.buildInfo && (app.buildInfo.tool || app.buildInfo.repo || app.buildInfo.notes) ? `
+<div class="panel"><div class="panel-pad">
+  <h2 class="section-title">🛠 제작 정보</h2>
+  <div class="metric-grid" style="margin-top:14px;">
+    ${app.buildInfo.tool ? `<div class="metric"><span>도구</span><strong>${app.buildInfo.tool}</strong></div>` : ""}
+    ${app.buildInfo.date ? `<div class="metric"><span>시기</span><strong>${app.buildInfo.date}</strong></div>` : ""}
+    ${app.buildInfo.repo ? `<div class="metric"><span>저장소</span><strong style="font-size:14px;">${app.buildInfo.repo}</strong></div>` : ""}
+  </div>
+  ${app.buildInfo.stack && app.buildInfo.stack.length ? `<div class="chips" style="padding-top:14px;margin-top:0;">${app.buildInfo.stack.map(s => `<span class="chip">${s}</span>`).join("")}</div>` : ""}
+  ${app.buildInfo.notes ? `<p class="section-sub" style="margin-top:14px;">${app.buildInfo.notes}</p>` : ""}
+</div></div>
+` : ""}
       `, { sourceUrl: app.sourceUrl });
     }
     function route() {
