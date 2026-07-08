@@ -112,21 +112,16 @@
     <input id="f-emoji" placeholder="✨" maxlength="4" />
 
     <label>카드 색상 테마</label>
-    <div class="theme-grid" id="theme-grid">
-      <div class="theme-opt active" data-theme="emerald">
-        <div class="theme-swatch" style="background:linear-gradient(135deg,#bbf7d0,#5eead4)"></div>Emerald
-      </div>
-      <div class="theme-opt" data-theme="amber">
-        <div class="theme-swatch" style="background:linear-gradient(135deg,#fef3c7,#fdba74)"></div>Amber
-      </div>
-      <div class="theme-opt" data-theme="sky">
-        <div class="theme-swatch" style="background:linear-gradient(135deg,#dff3ff,#c4b5fd)"></div>Sky
-      </div>
-      <div class="theme-opt" data-theme="rose">
-        <div class="theme-swatch" style="background:linear-gradient(135deg,#ffe4e6,#fdba74)"></div>Rose
-      </div>
-    </div>
-
+    <div class="theme-opt active" data-theme="emerald"><div class="theme-swatch" style="background:linear-gradient(135deg,#bbf7d0,#5eead4)"></div>Emerald</div>
+<div class="theme-opt" data-theme="amber"><div class="theme-swatch" style="background:linear-gradient(135deg,#fef3c7,#fdba74)"></div>Amber</div>
+<div class="theme-opt" data-theme="sky"><div class="theme-swatch" style="background:linear-gradient(135deg,#dff3ff,#c4b5fd)"></div>Sky</div>
+<div class="theme-opt" data-theme="rose"><div class="theme-swatch" style="background:linear-gradient(135deg,#ffe4e6,#fdba74)"></div>Rose</div>
+<div class="theme-opt" data-theme="violet"><div class="theme-swatch" style="background:linear-gradient(135deg,#ede9fe,#c4b5fd)"></div>Violet</div>
+<div class="theme-opt" data-theme="teal"><div class="theme-swatch" style="background:linear-gradient(135deg,#ccfbf1,#5eead4)"></div>Teal</div>
+<div class="theme-opt" data-theme="indigo"><div class="theme-swatch" style="background:linear-gradient(135deg,#e0e7ff,#a5b4fc)"></div>Indigo</div>
+<div class="theme-opt" data-theme="lime"><div class="theme-swatch" style="background:linear-gradient(135deg,#ecfccb,#bef264)"></div>Lime</div>
+<div class="theme-opt" data-theme="fuchsia"><div class="theme-swatch" style="background:linear-gradient(135deg,#fae8ff,#f0abfc)"></div>Fuchsia</div>
+<div class="theme-opt" data-theme="slate"><div class="theme-swatch" style="background:linear-gradient(135deg,#e2e8f0,#cbd5e1)"></div>Slate</div>
     <label>제목</label>
     <input id="f-title" placeholder="예: 새로운 업무 도우미 앱" />
 
@@ -167,12 +162,18 @@
 </div>
 
 <script>
-  const THEMES = {
-    emerald: { iconClass: "emerald", gradient: ["rgba(52,211,153,.25)", "rgba(94,234,212,.15)", "rgba(103,232,249,.2)"] },
-    amber:   { iconClass: "amber",   gradient: ["rgba(252,211,77,.3)", "rgba(253,186,116,.2)", "rgba(253,164,175,.2)"] },
-    sky:     { iconClass: "sky",     gradient: ["rgba(125,211,252,.3)", "rgba(165,180,252,.2)", "rgba(196,181,253,.2)"] },
-    rose:    { iconClass: "rose",    gradient: ["rgba(253,164,175,.3)", "rgba(249,168,212,.2)", "rgba(253,186,116,.2)"] }
-  };
+const THEMES = {
+  emerald: { bg: "#bbf7d0", color: "#047857", gradient: ["rgba(52,211,153,.25)", "rgba(94,234,212,.15)", "rgba(103,232,249,.2)"] },
+  amber:   { bg: "#fef3c7", color: "#b45309", gradient: ["rgba(252,211,77,.3)", "rgba(253,186,116,.2)", "rgba(253,164,175,.2)"] },
+  sky:     { bg: "#dff3ff", color: "#0369a1", gradient: ["rgba(125,211,252,.3)", "rgba(165,180,252,.2)", "rgba(196,181,253,.2)"] },
+  rose:    { bg: "#ffe4e6", color: "#be123c", gradient: ["rgba(253,164,175,.3)", "rgba(249,168,212,.2)", "rgba(253,186,116,.2)"] },
+  violet:  { bg: "#ede9fe", color: "#6d28d9", gradient: ["rgba(196,181,253,.3)", "rgba(221,214,254,.2)", "rgba(233,213,255,.2)"] },
+  teal:    { bg: "#ccfbf1", color: "#0f766e", gradient: ["rgba(94,234,212,.3)", "rgba(153,246,228,.2)", "rgba(165,243,252,.2)"] },
+  indigo:  { bg: "#e0e7ff", color: "#4338ca", gradient: ["rgba(165,180,252,.3)", "rgba(199,210,254,.2)", "rgba(196,181,253,.2)"] },
+  lime:    { bg: "#ecfccb", color: "#4d7c0f", gradient: ["rgba(190,242,100,.3)", "rgba(217,249,157,.2)", "rgba(253,224,71,.2)"] },
+  fuchsia: { bg: "#fae8ff", color: "#a21caf", gradient: ["rgba(240,171,252,.3)", "rgba(245,208,254,.2)", "rgba(253,164,175,.2)"] },
+  slate:   { bg: "#e2e8f0", color: "#334155", gradient: ["rgba(203,213,225,.35)", "rgba(226,232,240,.25)", "rgba(241,245,249,.25)"] }
+};
   let selectedTheme = "emerald";
 
   document.querySelectorAll(".theme-opt").forEach(el => {
