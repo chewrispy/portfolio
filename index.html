@@ -230,6 +230,7 @@ async function loadApps() {
               <div class="app-inner">
                 <div class="card-top"><div class="icon ${app.iconClass || ''}" style="${app.iconStyle || ''}" aria-hidden="true">${app.emoji}</div><span class="status">${app.status}</span></div>
                 <span class="tag">${app.tag}</span>
+${app.buildInfo && app.buildInfo.tool ? `<div style="font-size:11px;color:var(--muted);margin-top:4px;">🛠 ${app.buildInfo.tool}</div>` : ""}
                 <h2>${app.title}</h2>
                 <p class="desc">${app.description}</p>
                 <div class="chips">${app.features.map(f => `<span class="chip">${f}</span>`).join("")}</div>
