@@ -328,7 +328,7 @@ const THEMES = {
       longDescription: document.getElementById("f-long").value.trim() || desc,
       tag: document.getElementById("f-tag").value.trim() || "App",
       status: document.getElementById("f-status").value.trim() || "연결됨",
-      iconClass: theme.iconClass,
+      iconStyle: `background:${theme.bg};color:${theme.color}`,
       gradient: theme.gradient,
       features: document.getElementById("f-features").value.split(",").map(s => s.trim()).filter(Boolean),
       sourceUrl: document.getElementById("f-source").value.trim()
