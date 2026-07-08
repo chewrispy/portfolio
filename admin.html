@@ -59,6 +59,386 @@
   .theme-opt{border:1.5px solid var(--border);border-radius:12px;padding:8px 4px;text-align:center;cursor:pointer;font-size:11px;font-weight:800;}
   .theme-opt.active{border-color:var(--primary);box-shadow:0 0 0 3px rgba(24,24,27,.08);}
   .theme-swatch{width:100%;height:22px;border-radius:6px;margin-bottom:6px;}
+  .section-divider{height:1px;background:var(--border);margin:16px 0;}
+  .section-label{font-size:11px;font-weight:900;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
+</style>
+</head>
+<body>
+<div class="shell">
+  <h1>🔐 포트폴리오 관리자</h1>
+  <p class="sub">폼을 채우고 저장하면 GitHub의 <code>apps.json</code>이 바로 업데이트돼요. 저장 후 1~2분 뒤 강력 새로고침(Ctrl+Shift+R)으로 확인하세요.</p>
+
+  <details class="box" id="repo-box">
+    <summary>⚙️ 저장소 설정 (처음 한 번만 확인하면 됩니다)</summary>
+    <label>GitHub 계정명 (owner)</label>
+    <input id="cfg-owner" value="chewrispy" />
+    <label>저장소 이름 (repo)</label>
+    <input id="cfg-repo" value="portfolio" />
+    <div class="row">
+      <div>
+        <label>브랜치</label>
+        <input id="cfg-branch" value="main" />
+      </div>
+      <div>
+        <label>파일 경로</label>
+        <input id="cfg-path" value="apps.json" />
+      </div>
+    </div>
+    <label>Personal Access Token</label>
+    <input id="cfg-token" type="password" placeholder="ghp_ 로 시작하는 토큰" autocomplete="off" />
+    <div class="check-row">
+      <input id="cfg-remember" type="checkbox" />
+      <label style="margin:0;" for="cfg-remember">이 브라우저에 토큰 저장하기 (내 개인 기기에서만 체크하세요)</label>
+    </div>
+    <p class="hint">
+      토큰이 없다면 GitHub → 우측 상단 프로필 → <strong>Settings → Developer settings → Personal access tokens → Fine-grained tokens</strong>에서 발급하세요.
+      Repository access는 해당 저장소만 선택하고, Permissions에서 <strong>Contents: Read and write</strong>로 설정하면 됩니다.
+      이 admin.html 링크와 토큰은 다른 사람과 공유하지 마세요.
+    </p>
+  </details>
+
+  <div class="box">
+    <h2>현재 등록된 앱</h2>
+    <div id="app-list"><p class="hint">불러오는 중이거나 아직 불러오지 않았어요. 아래 버튼을 눌러주세요.</p></div>
+    <button class="btn ghost" id="btn-refresh" style="margin-top:12px;width:100%;">📋 목록 새로고침</button>
+    <div id="list-status" class="status"></div>
+  </div>
+
+  <div class="box">
+    <h2>새 앱 추가</h2>
+
+    <div class="section-label">기본 정보</div>
+
+    <label>고유 슬러그 (영문, 예: my-new-app)</label>
+    <input id="f-slug" placeholder="my-new-app" />
+
+    <label>이모지 아이콘</label>
+    <input id="f-emoji" placeholder="✨" maxlength="4" />
+
+    <label>카드 색상 테마</label>
+    <div class="theme-grid" id="theme-grid">
+      <div class="theme-opt active" data-theme="emerald"><div class="theme-swatch" style="background:linear-gradient(135deg,#bbf7d0,#5eead4)"></div>Emerald</div>
+      <div class="theme-opt" data-theme="amber"><div class="theme-swatch" style="background:linear-gradient(135deg,#fef3c7,#fdba74)"></div>Amber</div>
+      <div class="theme-opt" data-theme="sky"><div class="theme-swatch" style="background:linear-gradient(135deg,#dff3ff,#c4b5fd)"></div>Sky</div>
+      <div class="theme-opt" data-theme="rose"><div class="theme-swatch" style="background:linear-gradient(135deg,#ffe4e6,#fdba74)"></div>Rose</div>
+      <div class="theme-opt" data-theme="violet"><div class="theme-swatch" style="background:linear-gradient(135deg,#ede9fe,#c4b5fd)"></div>Violet</div>
+      <div class="theme-opt" data-theme="teal"><div class="theme-swatch" style="background:linear-gradient(135deg,#ccfbf1,#5eead4)"></div>Teal</div>
+      <div class="theme-opt" data-theme="indigo"><div class="theme-swatch" style="background:linear-gradient(135deg,#e0e7ff,#a5b4fc)"></div>Indigo</div>
+      <div class="theme-opt" data-theme="lime"><div class="theme-swatch" style="background:linear-gradient(135deg,#ecfccb,#bef264)"></div>Lime</div>
+      <div class="theme-opt" data-theme="fuchsia"><div class="theme-swatch" style="background:linear-gradient(135deg,#fae8ff,#f0abfc)"></div>Fuchsia</div>
+      <div class="theme-opt" data-theme="slate"><div class="theme-swatch" style="background:linear-gradient(135deg,#e2e8f0,#cbd5e1)"></div>Slate</div>
+    </div>
+
+    <label>제목</label>
+    <input id="f-title" placeholder="예: 새로운 업무 도우미 앱" />
+
+    <label>짧은 제목 (카드 요약용, 선택)</label>
+    <input id="f-short" placeholder="예: 업무 도우미" />
+
+    <div class="row">
+      <div>
+        <label>태그</label>
+        <input id="f-tag" placeholder="예: Productivity" />
+      </div>
+      <div>
+        <label>상태 배지</label>
+        <input id="f-status" placeholder="예: 연결됨" value="연결됨" />
+      </div>
+    </div>
+
+    <label>한 줄 설명 (카드에 표시)</label>
+    <textarea id="f-desc" placeholder="카드에서 보여줄 짧은 설명"></textarea>
+
+    <label>상세 설명 (앱 상세 페이지 상단에 표시)</label>
+    <textarea id="f-long" placeholder="앱을 열었을 때 보여줄 조금 더 긴 설명"></textarea>
+
+    <label>주요 기능 (쉼표로 구분)</label>
+    <input id="f-features" placeholder="예: 재고 확인, 자동 알림, 엑셀 내보내기" />
+
+    <label>연결할 웹앱 주소 (선택, 외부 링크로 열 경우)</label>
+    <input id="f-source" placeholder="https://..." />
+
+    <div class="section-divider"></div>
+    <div class="section-label">제작 정보 (나중에 기억하기 쉽게)</div>
+
+    <div class="row">
+      <div>
+        <label>제작 도구</label>
+        <select id="f-tool">
+          <option value="">선택 안 함</option>
+          <option value="Claude Code">Claude Code</option>
+          <option value="Claude (Artifact/Cowork)">Claude (Artifact/Cowork)</option>
+          <option value="ChatGPT">ChatGPT</option>
+          <option value="v0">v0</option>
+          <option value="Cursor">Cursor</option>
+          <option value="Bolt">Bolt</option>
+          <option value="Replit">Replit</option>
+          <option value="Google Apps Script">Google Apps Script</option>
+          <option value="직접 코딩">직접 코딩</option>
+          <option value="기타">기타</option>
+        </select>
+      </div>
+      <div>
+        <label>제작 시기</label>
+        <input id="f-date" type="month" />
+      </div>
+    </div>
+
+    <label>저장소 / 배포 위치</label>
+    <input id="f-repo" placeholder="예: github.com/chewrispy/snack" />
+
+    <label>기술 스택 (쉼표로 구분)</label>
+    <input id="f-stack" placeholder="예: React, Google Sheets, Apps Script" />
+
+    <label>제작 메모 (계기, 배경 등)</label>
+    <textarea id="f-notes" placeholder="왜 만들었는지, 어떤 상황이었는지 메모해두면 나중에 도움돼요"></textarea>
+
+    <div class="check-row">
+      <input id="f-prepend" type="checkbox" checked />
+      <label style="margin:0;" for="f-prepend">새 앱을 목록 맨 위에 추가</label>
+    </div>
+
+    <button class="btn primary" id="btn-add">＋ 앱 추가하고 저장하기</button>
+    <div id="add-status" class="status"></div>
+  </div>
+</div>
+
+<script>
+  const THEMES = {
+    emerald: { bg: "#bbf7d0", color: "#047857", gradient: ["rgba(52,211,153,.25)", "rgba(94,234,212,.15)", "rgba(103,232,249,.2)"] },
+    amber:   { bg: "#fef3c7", color: "#b45309", gradient: ["rgba(252,211,77,.3)", "rgba(253,186,116,.2)", "rgba(253,164,175,.2)"] },
+    sky:     { bg: "#dff3ff", color: "#0369a1", gradient: ["rgba(125,211,252,.3)", "rgba(165,180,252,.2)", "rgba(196,181,253,.2)"] },
+    rose:    { bg: "#ffe4e6", color: "#be123c", gradient: ["rgba(253,164,175,.3)", "rgba(249,168,212,.2)", "rgba(253,186,116,.2)"] },
+    violet:  { bg: "#ede9fe", color: "#6d28d9", gradient: ["rgba(196,181,253,.3)", "rgba(221,214,254,.2)", "rgba(233,213,255,.2)"] },
+    teal:    { bg: "#ccfbf1", color: "#0f766e", gradient: ["rgba(94,234,212,.3)", "rgba(153,246,228,.2)", "rgba(165,243,252,.2)"] },
+    indigo:  { bg: "#e0e7ff", color: "#4338ca", gradient: ["rgba(165,180,252,.3)", "rgba(199,210,254,.2)", "rgba(196,181,253,.2)"] },
+    lime:    { bg: "#ecfccb", color: "#4d7c0f", gradient: ["rgba(190,242,100,.3)", "rgba(217,249,157,.2)", "rgba(253,224,71,.2)"] },
+    fuchsia: { bg: "#fae8ff", color: "#a21caf", gradient: ["rgba(240,171,252,.3)", "rgba(245,208,254,.2)", "rgba(253,164,175,.2)"] },
+    slate:   { bg: "#e2e8f0", color: "#334155", gradient: ["rgba(203,213,225,.35)", "rgba(226,232,240,.25)", "rgba(241,245,249,.25)"] }
+  };
+  let selectedTheme = "emerald";
+
+  document.querySelectorAll(".theme-opt").forEach(el => {
+    el.addEventListener("click", () => {
+      document.querySelectorAll(".theme-opt").forEach(o => o.classList.remove("active"));
+      el.classList.add("active");
+      selectedTheme = el.dataset.theme;
+    });
+  });
+
+  const LS_KEY = "portfolio-admin-token";
+  const tokenInput = document.getElementById("cfg-token");
+  const rememberBox = document.getElementById("cfg-remember");
+  const saved = localStorage.getItem(LS_KEY);
+  if (saved) { tokenInput.value = saved; rememberBox.checked = true; }
+  rememberBox.addEventListener("change", () => {
+    if (!rememberBox.checked) localStorage.removeItem(LS_KEY);
+  });
+
+  function cfg() {
+    return {
+      owner: document.getElementById("cfg-owner").value.trim(),
+      repo: document.getElementById("cfg-repo").value.trim(),
+      branch: document.getElementById("cfg-branch").value.trim() || "main",
+      path: document.getElementById("cfg-path").value.trim() || "apps.json",
+      token: document.getElementById("cfg-token").value.trim()
+    };
+  }
+
+  function b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+      (m, p1) => String.fromCharCode(parseInt(p1, 16))));
+  }
+  function b64DecodeUnicode(str) {
+    return decodeURIComponent(atob(str.replace(/\n/g, "")).split("").map(c =>
+      "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)).join(""));
+  }
+
+  async function ghGetFile(c) {
+    const url = `https://api.github.com/repos/${c.owner}/${c.repo}/contents/${c.path}?ref=${encodeURIComponent(c.branch)}`;
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${c.token}`, Accept: "application/vnd.github+json" }
+    });
+    if (!res.ok) throw new Error(`파일을 불러오지 못했어요 (HTTP ${res.status}). 토큰/저장소 설정을 확인해주세요.`);
+    const data = await res.json();
+    const content = b64DecodeUnicode(data.content);
+    return { list: JSON.parse(content), sha: data.sha };
+  }
+
+  async function ghPutFile(c, list, sha, message) {
+    const url = `https://api.github.com/repos/${c.owner}/${c.repo}/contents/${c.path}`;
+    const body = {
+      message,
+      content: b64EncodeUnicode(JSON.stringify(list, null, 2)),
+      sha,
+      branch: c.branch
+    };
+    const res = await fetch(url, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${c.token}`,
+        Accept: "application/vnd.github+json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) {
+      const errText = await res.text().catch(() => "");
+      throw new Error(`저장에 실패했어요 (HTTP ${res.status}). ${errText}`);
+    }
+    return res.json();
+  }
+
+  function showStatus(el, type, msg) {
+    el.className = "status " + type;
+    el.textContent = msg;
+  }
+
+  const listEl = document.getElementById("app-list");
+  const listStatus = document.getElementById("list-status");
+
+  async function refreshList() {
+    const c = cfg();
+    if (!c.token) { showStatus(listStatus, "err", "토큰을 먼저 입력해주세요."); return; }
+    showStatus(listStatus, "loading", "불러오는 중...");
+    try {
+      const { list } = await ghGetFile(c);
+      if (!list.length) {
+        listEl.innerHTML = `<p class="hint">등록된 앱이 없어요.</p>`;
+      } else {
+        listEl.innerHTML = list.map((app, i) => `
+          <div class="app-row">
+            <div class="icon">${app.emoji || "📦"}</div>
+            <div class="info">
+              <strong>${escapeHtml(app.title)}</strong>
+              <span>${escapeHtml(app.slug)} · ${escapeHtml(app.tag || "")}${app.buildInfo && app.buildInfo.tool ? " · 🛠 " + escapeHtml(app.buildInfo.tool) : ""}</span>
+            </div>
+            <button data-idx="${i}" data-action="delete">삭제</button>
+          </div>
+        `).join("");
+        listEl.querySelectorAll("[data-action='delete']").forEach(btn => {
+          btn.addEventListener("click", () => deleteApp(Number(btn.dataset.idx)));
+        });
+      }
+      listStatus.className = "status";
+    } catch (e) {
+      showStatus(listStatus, "err", e.message);
+    }
+  }
+
+  async function deleteApp(idx) {
+    const c = cfg();
+    if (!confirm("정말 이 앱을 삭제할까요?")) return;
+    showStatus(listStatus, "loading", "삭제하는 중...");
+    try {
+      const { list, sha } = await ghGetFile(c);
+      const removed = list.splice(idx, 1)[0];
+      await ghPutFile(c, list, sha, `앱 삭제: ${removed.title}`);
+      showStatus(listStatus, "ok", "삭제했어요. 잠시 후 사이트에 반영됩니다.");
+      refreshList();
+    } catch (e) {
+      showStatus(listStatus, "err", e.message);
+    }
+  }
+
+  function escapeHtml(v) {
+    return String(v ?? "").replace(/[&<>'"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[ch]));
+  }
+
+  document.getElementById("btn-refresh").addEventListener("click", refreshList);
+
+  document.getElementById("btn-add").addEventListener("click", async () => {
+    const c = cfg();
+    const addStatus = document.getElementById("add-status");
+    if (!c.token) { showStatus(addStatus, "err", "토큰을 먼저 입력해주세요."); return; }
+
+    const slug = document.getElementById("f-slug").value.trim();
+    const title = document.getElementById("f-title").value.trim();
+    const desc = document.getElementById("f-desc").value.trim();
+    if (!slug || !title || !desc) {
+      showStatus(addStatus, "err", "슬러그, 제목, 한 줄 설명은 필수예요.");
+      return;
+    }
+
+    const theme = THEMES[selectedTheme];
+    const tool = document.getElementById("f-tool").value.trim();
+    const buildDate = document.getElementById("f-date").value.trim();
+    const repo = document.getElementById("f-repo").value.trim();
+    const stack = document.getElementById("f-stack").value.split(",").map(s => s.trim()).filter(Boolean);
+    const notes = document.getElementById("f-notes").value.trim();
+
+    const newApp = {
+      slug,
+      emoji: document.getElementById("f-emoji").value.trim() || "✨",
+      title,
+      shortTitle: document.getElementById("f-short").value.trim() || title,
+      description: desc,
+      longDescription: document.getElementById("f-long").value.trim() || desc,
+      tag: document.getElementById("f-tag").value.trim() || "App",
+      status: document.getElementById("f-status").value.trim() || "연결됨",
+      iconStyle: `background:${theme.bg};color:${theme.color}`,
+      gradient: theme.gradient,
+      features: document.getElementById("f-features").value.split(",").map(s => s.trim()).filter(Boolean),
+      sourceUrl: document.getElementById("f-source").value.trim(),
+      buildInfo: {
+        tool: tool || "",
+        date: buildDate || "",
+        repo: repo || "",
+        stack,
+        notes
+      }
+    };
+
+    if (rememberBox.checked) localStorage.setItem(LS_KEY, c.token);
+
+    showStatus(addStatus, "loading", "저장하는 중...");
+    try {
+      const { list, sha } = await ghGetFile(c);
+      if (list.some(a => a.slug === slug)) {
+        showStatus(addStatus, "err", "이미 같은 슬러그를 가진 앱이 있어요. 슬러그를 바꿔주세요.");
+        return;
+      }
+      const prepend = document.getElementById("f-prepend").checked;
+      const updated = prepend ? [newApp, ...list] : [...list, newApp];
+      await ghPutFile(c, updated, sha, `앱 추가: ${title}`);
+      showStatus(addStatus, "ok", "✅ 저장 완료! 1~2분 뒤 사이트에서 확인해보세요.");
+      refreshList();
+      ["f-slug","f-emoji","f-title","f-short","f-tag","f-desc","f-long","f-features","f-source","f-date","f-repo","f-stack","f-notes"]
+        .forEach(id => document.getElementById(id).value = "");
+      document.getElementById("f-status").value = "연결됨";
+      document.getElementById("f-tool").value = "";
+    } catch (e) {
+      showStatus(addStatus, "err", e.message);
+    }
+  });
+</script>
+</body>
+</html>
+  .check-row input{width:auto;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    border:1px solid var(--border);border-radius:999px;padding:11px 20px;background:var(--card);
+    color:var(--fg);font-size:14px;font-weight:800;cursor:pointer;
+  }
+  .btn.primary{background:var(--primary);color:var(--primary-fg);border-color:var(--primary);width:100%;padding:13px;font-size:15px;margin-top:16px;}
+  .btn.ghost{background:transparent;}
+  .status{margin-top:12px;font-size:13px;padding:10px 12px;border-radius:10px;display:none;}
+  .status.ok{display:block;background:#ecfdf5;color:var(--ok);}
+  .status.err{display:block;background:#fef2f2;color:var(--err);}
+  .status.loading{display:block;background:var(--secondary);color:var(--muted);}
+  .app-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+  .app-row:last-child{border-bottom:0;}
+  .app-row .icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--secondary);flex-shrink:0;}
+  .app-row .info{flex:1;min-width:0;}
+  .app-row .info strong{font-size:13px;display:block;}
+  .app-row .info span{font-size:11px;color:var(--muted);}
+  .app-row button{font-size:11px;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--err);cursor:pointer;}
+  .hint{font-size:12px;color:var(--muted);line-height:1.6;margin-top:8px;}
+  .hint a{color:var(--fg);text-decoration:underline;}
+  .theme-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:6px;}
+  .theme-opt{border:1.5px solid var(--border);border-radius:12px;padding:8px 4px;text-align:center;cursor:pointer;font-size:11px;font-weight:800;}
+  .theme-opt.active{border-color:var(--primary);box-shadow:0 0 0 3px rgba(24,24,27,.08);}
+  .theme-swatch{width:100%;height:22px;border-radius:6px;margin-bottom:6px;}
 </style>
 </head>
 <body>
