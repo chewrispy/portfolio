@@ -227,7 +227,7 @@ async function loadApps() {
           ${apps.map(app => `
             <a class="app-card" href="#${app.slug}" style="${appStyle(app)}">
               <div class="app-inner">
-                <div class="card-top"><div class="icon ${app.iconClass}" aria-hidden="true">${app.emoji}</div><span class="status">${app.status}</span></div>
+                <div class="card-top"><div class="icon ${app.iconClass || ''}" style="${app.iconStyle || ''}" aria-hidden="true">${app.emoji}</div>" aria-hidden="true">${app.emoji}</div><span class="status">${app.status}</span></div>
                 <span class="tag">${app.tag}</span>
                 <h2>${app.title}</h2>
                 <p class="desc">${app.description}</p>
@@ -248,7 +248,7 @@ async function loadApps() {
                 <h1>${app.title}</h1>
                 <p>${app.longDescription}</p>
               </div>
-              <div class="icon ${app.iconClass}" aria-hidden="true">${app.emoji}</div>
+              <div class="icon ${app.iconClass || ''}" style="${app.iconStyle || ''}" aria-hidden="true">${app.emoji}</div>" aria-hidden="true">${app.emoji}</div>
             </div>
             <div class="detail-body">${body}</div>
           </div>
