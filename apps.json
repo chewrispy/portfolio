@@ -81,7 +81,7 @@
     ],
     "sourceUrl": "https://z43n73.csb.app/",
     "buildInfo": {
-      "tool": "Claude",
+      "tool": "Claude + Gemini",
       "date": "2026-06-05",
       "repo": "",
       "deploy": "StackBlitz",
@@ -141,7 +141,7 @@
     ],
     "sourceUrl": "",
     "buildInfo": {
-      "tool": "Claude Code",
+      "tool": "Claude",
       "date": "2026-07-08",
       "repo": "Local",
       "deploy": "GitHub Pages",
