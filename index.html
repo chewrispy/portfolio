@@ -284,8 +284,8 @@ ${app.buildInfo && app.buildInfo.tool ? `<div style="font-size:11px;color:var(--
   <div class="metric-grid" style="margin-top:14px;">
     ${app.buildInfo.tool ? `<div class="metric"><span>도구</span><strong>${app.buildInfo.tool}</strong></div>` : ""}
     ${app.buildInfo.date ? `<div class="metric"><span>시기</span><strong>${app.buildInfo.date}</strong></div>` : ""}
-    ${app.buildInfo.repo ? `<div class="metric"><span>저장소</span><strong style="font-size:14px;">${app.buildInfo.repo}</strong></div>` : ""}
-  </div>
+${app.buildInfo.repo ? `<div class="metric"><span>저장소</span><strong style="font-size:14px;">${app.buildInfo.repo}</strong></div>` : ""}
+${app.buildInfo.deploy ? `<div class="metric"><span>배포</span><strong style="font-size:14px;">${app.buildInfo.deploy}</strong></div>` : ""}  </div>
   ${app.buildInfo.stack && app.buildInfo.stack.length ? `<div class="chips" style="padding-top:14px;margin-top:0;">${app.buildInfo.stack.map(s => `<span class="chip">${s}</span>`).join("")}</div>` : ""}
   ${app.buildInfo.notes ? `<p class="section-sub" style="margin-top:14px;">${app.buildInfo.notes}</p>` : ""}
 </div></div>
@@ -306,7 +306,7 @@ ${app.buildInfo && app.buildInfo.tool ? `<div style="font-size:11px;color:var(--
     ${app.buildInfo.tool ? `<div class="metric"><span>도구</span><strong>${app.buildInfo.tool}</strong></div>` : ""}
     ${app.buildInfo.date ? `<div class="metric"><span>시기</span><strong>${app.buildInfo.date}</strong></div>` : ""}
     ${app.buildInfo.repo ? `<div class="metric"><span>저장소</span><strong style="font-size:14px;">${app.buildInfo.repo}</strong></div>` : ""}
-  </div>
+${app.buildInfo.deploy ? `<div class="metric"><span>배포</span><strong style="font-size:14px;">${app.buildInfo.deploy}</strong></div>` : ""}  </div>
   ${app.buildInfo.stack && app.buildInfo.stack.length ? `<div class="chips" style="padding-top:14px;margin-top:0;">${app.buildInfo.stack.map(s => `<span class="chip">${s}</span>`).join("")}</div>` : ""}
   ${app.buildInfo.notes ? `<p class="section-sub" style="margin-top:14px;">${app.buildInfo.notes}</p>` : ""}
 </div></div>
@@ -326,8 +326,8 @@ ${app.buildInfo && app.buildInfo.tool ? `<div style="font-size:11px;color:var(--
   <div class="metric-grid" style="margin-top:14px;">
     ${app.buildInfo.tool ? `<div class="metric"><span>도구</span><strong>${app.buildInfo.tool}</strong></div>` : ""}
     ${app.buildInfo.date ? `<div class="metric"><span>시기</span><strong>${app.buildInfo.date}</strong></div>` : ""}
-    ${app.buildInfo.repo ? `<div class="metric"><span>저장소</span><strong style="font-size:14px;">${app.buildInfo.repo}</strong></div>` : ""}
-  </div>
+${app.buildInfo.repo ? `<div class="metric"><span>저장소</span><strong style="font-size:14px;">${app.buildInfo.repo}</strong></div>` : ""}
+${app.buildInfo.deploy ? `<div class="metric"><span>배포</span><strong style="font-size:14px;">${app.buildInfo.deploy}</strong></div>` : ""}  </div>
   ${app.buildInfo.stack && app.buildInfo.stack.length ? `<div class="chips" style="padding-top:14px;margin-top:0;">${app.buildInfo.stack.map(s => `<span class="chip">${s}</span>`).join("")}</div>` : ""}
   ${app.buildInfo.notes ? `<p class="section-sub" style="margin-top:14px;">${app.buildInfo.notes}</p>` : ""}
 </div></div>
@@ -350,8 +350,8 @@ ${app.buildInfo && app.buildInfo.tool ? `<div style="font-size:11px;color:var(--
   <div class="metric-grid" style="margin-top:14px;">
     ${app.buildInfo.tool ? `<div class="metric"><span>도구</span><strong>${app.buildInfo.tool}</strong></div>` : ""}
     ${app.buildInfo.date ? `<div class="metric"><span>시기</span><strong>${app.buildInfo.date}</strong></div>` : ""}
-    ${app.buildInfo.repo ? `<div class="metric"><span>저장소</span><strong style="font-size:14px;">${app.buildInfo.repo}</strong></div>` : ""}
-  </div>
+${app.buildInfo.repo ? `<div class="metric"><span>저장소</span><strong style="font-size:14px;">${app.buildInfo.repo}</strong></div>` : ""}
+${app.buildInfo.deploy ? `<div class="metric"><span>배포</span><strong style="font-size:14px;">${app.buildInfo.deploy}</strong></div>` : ""}  </div>
   ${app.buildInfo.stack && app.buildInfo.stack.length ? `<div class="chips" style="padding-top:14px;margin-top:0;">${app.buildInfo.stack.map(s => `<span class="chip">${s}</span>`).join("")}</div>` : ""}
   ${app.buildInfo.notes ? `<p class="section-sub" style="margin-top:14px;">${app.buildInfo.notes}</p>` : ""}
 </div></div>
