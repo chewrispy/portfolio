@@ -184,8 +184,16 @@
       </div>
     </div>
 
-    <label>저장소 / 배포 위치</label>
-    <input id="f-repo" placeholder="예: github.com/chewrispy/snack" />
+    <div class="row">
+      <div>
+        <label>저장소</label>
+        <input id="f-repo" placeholder="예: github.com/chewrispy/snack" />
+      </div>
+      <div>
+        <label>배포 방식</label>
+        <input id="f-deploy" placeholder="예: GitHub Pages, StackBlitz" />
+      </div>
+    </div>
 
     <label>기술 스택 (쉼표로 구분)</label>
     <input id="f-stack" placeholder="예: React, Google Sheets, Apps Script" />
@@ -364,6 +372,7 @@
     const tool = document.getElementById("f-tool").value.trim();
     const buildDate = document.getElementById("f-date").value.trim();
     const repo = document.getElementById("f-repo").value.trim();
+    const deploy = document.getElementById("f-deploy").value.trim();
     const stack = document.getElementById("f-stack").value.split(",").map(s => s.trim()).filter(Boolean);
     const notes = document.getElementById("f-notes").value.trim();
 
@@ -384,6 +393,7 @@
         tool: tool || "",
         date: buildDate || "",
         repo: repo || "",
+        deploy: deploy || "",
         stack,
         notes
       }
@@ -403,7 +413,7 @@
       await ghPutFile(c, updated, sha, `앱 추가: ${title}`);
       showStatus(addStatus, "ok", "✅ 저장 완료! 1~2분 뒤 사이트에서 확인해보세요.");
       refreshList();
-      ["f-slug","f-emoji","f-title","f-short","f-tag","f-desc","f-long","f-features","f-source","f-date","f-repo","f-stack","f-notes"]
+      ["f-slug","f-emoji","f-title","f-short","f-tag","f-desc","f-long","f-features","f-source","f-date","f-repo","f-deploy","f-stack","f-notes"]
         .forEach(id => document.getElementById(id).value = "");
       document.getElementById("f-status").value = "연결됨";
       document.getElementById("f-tool").value = "";
